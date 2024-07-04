@@ -1,0 +1,1292 @@
+[
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "How can I parallelize calls in LangChain?"
+    },
+    "outputs": {
+      "answer": "To make parallel calls from a LangChain object, use the 'batch()' (or asynchronous 'abatch()') method. You can also use a `RunnableParallel` object."
+    },
+    "metadata": null,
+    "id": "2c73a1e2-432f-4373-9982-32b12ba392a5",
+    "created_at": "2023-11-07T20:20:22.498012+00:00",
+    "modified_at": "2023-11-08T22:31:39.561845+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "in code, how can i add a system message at the end of the conversation history to influence the output of the llm"
+    },
+    "outputs": {
+      "answer": "\n```python\nfrom langchain.prompts import ChatPromptTemplate, MessagesPlaceholder\n\nprompt_template = ChatPromptTemplate.from_messages(\n    [\n        (\"human\", \"{user_input}\"),\n        MessagesPlaceholder(variable_name=\"chat_history\")\n        (\"system\", \"New System Instruction here\"),\n    ]\n)\n```\nWhen formatted, it will generate 1 human/user message and 1 system message, as well as messages for the whole conversation history.\n```python\nprompt_template.format_messages(user_input=\"Hello\", chat_history=[])\n```\n[HumanMessage(content='Hello', additional_kwargs={}, example=False),\n SystemMessage(content='New System Instruction here', additional_kwargs={})]\n"
+    },
+    "metadata": null,
+    "id": "75253a84-aaaa-43ce-a314-f522555249b4",
+    "created_at": "2023-11-07T20:20:25.013643+00:00",
+    "modified_at": "2023-11-07T20:20:25.013643+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "how to use enums in Tools that will be used by functions agent?"
+    },
+    "outputs": {
+      "answer": "If you're defining a dynamic tool (either using the @tool decorator or the `.from_function(...) classmethod), simply using the enum typehint is enough. If you are manually specifying an `args_schema` as a pydantic basemodel, you can specify the enum as the argument typehint there."
+    },
+    "metadata": null,
+    "id": "8e35a948-c7dc-4714-bb3f-1019569c48da",
+    "created_at": "2023-11-07T20:20:25.012291+00:00",
+    "modified_at": "2023-11-07T20:20:25.012291+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "How do I deal with openai rate limiting by having a backup model? Show me with code."
+    },
+    "outputs": {
+      "answer": "A straightforward way to do this is to specify fallback models using LangChain Expression Language. Example below:\n```python     \nfrom langchain.chat_models import ChatOpenAI\n\nbad_llm = ChatOpenAI(model_name=\"gpt-fake\")\ngood_llm = ChatOpenAI(model_name=\"gpt-3.5-turbo\")\nllm = bad_llm.with_fallbacks([good_llm])\nllm.invoke(\"Why did the the chicken cross the road?\")\n```"
+    },
+    "metadata": null,
+    "id": "d9297dad-1443-4907-832a-e85d0fb84af8",
+    "created_at": "2023-11-07T20:20:24.964444+00:00",
+    "modified_at": "2023-11-07T20:20:24.964444+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "I'm runing my own model using vllm. How do I connect it to LangChain?"
+    },
+    "outputs": {
+      "answer": "LangChain has a VLLM integration:\"\n```python\nfrom langchain.llms import VLLM\n\nllm = VLLM(model=\"mosaicml/mpt-7b\",\n           trust_remote_code=True,  # mandatory for hf models\n           max_new_tokens=128,\n           top_k=10,\n           top_p=0.95,\n           temperature=0.8,\n)\n\nprint(llm(\"What is the capital of France ?\"))"
+    },
+    "metadata": null,
+    "id": "554a8fab-b080-40e5-8704-c30c8b948902",
+    "created_at": "2023-11-07T20:20:24.939530+00:00",
+    "modified_at": "2023-11-07T20:20:24.939530+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "What's a runnable lambda?"
+    },
+    "outputs": {
+      "answer": "A runnable lambda is an object that implements LangChain's `Runnable` interface and runs a callbale (i.e., a function). Note the function must accept a single argument."
+    },
+    "metadata": null,
+    "id": "ca0dff7a-ac35-417a-be5f-b8e341c91ef7",
+    "created_at": "2023-11-07T20:20:24.901513+00:00",
+    "modified_at": "2023-11-07T20:20:24.901513+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "What's an LLMChain"
+    },
+    "outputs": {
+      "answer": "An LLMChain is a chain that composes basic LLM functionality. It consists of a PromptTemplate and a language model (either an LLM or chat model). It formats the prompt template using the input key values provided (and also memory key values, if available), passes the formatted string to LLM and returns the LLM output."
+    },
+    "metadata": null,
+    "id": "cf822d65-df8e-4d53-85ca-38ec5b276416",
+    "created_at": "2023-11-07T20:20:24.785463+00:00",
+    "modified_at": "2023-11-07T20:20:24.785463+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "What's the difference between a prompt template and a chat prompt template?"
+    },
+    "outputs": {
+      "answer": "A prompt template wraps instructions, examples, and other formatting information for the llm's prompts. A chat prompt template provides similar functionality for chat models. The largest difference is that chat prompt templates expose a `format_messages` method to convert the  prompt template into a list of structured chat messages."
+    },
+    "metadata": null,
+    "id": "ed754eef-5a5d-41fe-8831-a3ef08269e6d",
+    "created_at": "2023-11-07T20:20:24.743406+00:00",
+    "modified_at": "2023-11-07T20:20:24.743406+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "What is ConversationSummaryBufferMemory?"
+    },
+    "outputs": {
+      "answer": "ConversationSummaryBufferMemory is a memory type that combines the ideas of keeping a buffer of recent interactions and compiling them into a summary. It uses token length to determine when to flush interactions."
+    },
+    "metadata": null,
+    "id": "622759e4-2a03-474f-9477-f2a1c70b1468",
+    "created_at": "2023-11-07T20:20:24.742291+00:00",
+    "modified_at": "2023-11-07T20:20:24.742291+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "What does LangChain offer for token counting?"
+    },
+    "outputs": {
+      "answer": "LangChain offers a context manager that allows you to count tokens, as well as integrations with services like LangSmith that can help track tokens."
+    },
+    "metadata": null,
+    "id": "30a89a3f-2fc5-4a49-80ec-ccd85369b29a",
+    "created_at": "2023-11-07T20:20:24.617031+00:00",
+    "modified_at": "2023-11-07T20:20:24.617031+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "What is the purpose of caching embeddings?"
+    },
+    "outputs": {
+      "answer": "Caching embeddings allows for storing or temporarily caching embeddings to avoid the need for recomputing them."
+    },
+    "metadata": null,
+    "id": "1eaf6789-1224-4b8a-9eec-a56e96cb98e3",
+    "created_at": "2023-11-07T20:20:24.595142+00:00",
+    "modified_at": "2023-11-07T20:20:24.595142+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "What is the purpose of the Retry parser?"
+    },
+    "outputs": {
+      "answer": "The Retry parser is used when the LLM output is not in the expected format. It passes the input and initial output back to the LLM so it can try again with the correct format."
+    },
+    "metadata": null,
+    "id": "662c7f56-cfd4-46d8-99d0-90601b47ab01",
+    "created_at": "2023-11-07T20:20:24.263735+00:00",
+    "modified_at": "2023-11-07T20:20:24.263735+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "What does ConversationBufferWindowMemory do?"
+    },
+    "outputs": {
+      "answer": "ConversationBufferWindowMemory keeps a list of the interactions of the conversation over time. It only uses the last K interactions. This can be useful for keeping a sliding window of the most recent interactions, so the buffer does not get too large."
+    },
+    "metadata": null,
+    "id": "af5db5b3-3a0f-423e-ae7d-b4cb7efef596",
+    "created_at": "2023-11-07T20:20:24.218609+00:00",
+    "modified_at": "2023-11-07T20:20:24.218609+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "What is the main purpose of the time-weighted vector store retriever?"
+    },
+    "outputs": {
+      "answer": "The main purpose of the time-weighted vector store retriever is to use a combination of semantic similarity and a time decay to retrieve relevant vectors."
+    },
+    "metadata": null,
+    "id": "3f23303d-e5f3-4c2d-8940-b081578e2145",
+    "created_at": "2023-11-07T20:20:24.211383+00:00",
+    "modified_at": "2023-11-07T20:20:24.211383+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "What serialization format is used to serialize chains to and from disk?"
+    },
+    "outputs": {
+      "answer": "The serialization format used is JSON or YAML."
+    },
+    "metadata": null,
+    "id": "2ff33338-936b-4dcd-a448-d6f4c6218d4f",
+    "created_at": "2023-11-07T20:20:24.210622+00:00",
+    "modified_at": "2023-11-07T20:20:24.210622+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "whats an agent type that works well with Anthropic's models and supports structured output?"
+    },
+    "outputs": {
+      "answer": "The XML agent works well with Anthropic's Claude 2 model. Here's some code for doing so:\n\n```python\nfrom langchain.agents import XMLAgent, tool, AgentExecutor\nfrom langchain.chat_models import ChatAnthropic\nfrom langchain.chains import LLMChain\nmodel = ChatAnthropic(model='claude-2')\nchain = LLMChain(\nllm=model,\nprompt=XMLAgent.get_default_prompt(),\noutput_parser=XMLAgent.get_default_output_parser()\n)\nagent = XMLAgent(tools=tool_list, llm_chain=chain)\nagent_executor = AgentExecutor(agent=agent, tools=tool_list, verbose=True)\n```"
+    },
+    "metadata": null,
+    "id": "654b534c-ecf8-402f-ac94-cee82e7aaf74",
+    "created_at": "2023-11-07T20:20:24.116752+00:00",
+    "modified_at": "2023-11-07T20:20:24.116752+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "I want to save the configuration for a given LLM. Show me how to do that."
+    },
+    "outputs": {
+      "answer": "To save the configuration for a given LLM, you can follow these steps:\n\nFirst, let's go over loading an LLM configuration from disk. LLM configurations can be saved in two formats: JSON or YAML, but they are loaded in the same way.\n\nFor a JSON-formatted LLM configuration (llm.json):\n\n```json\n{\n    \"model_name\": \"text-davinci-003\",\n    \"temperature\": 0.7,\n    \"max_tokens\": 256,\n    \"top_p\": 1.0,\n    \"frequency_penalty\": 0.0,\n    \"presence_penalty\": 0.0,\n    \"n\": 1,\n    \"best_of\": 1,\n    \"request_timeout\": null,\n    \"_type\": \"openai\"\n}\n```\n\nLoad the configuration like this:\n\n```python\nfrom langchain.llms.loading import load_llm\n\nllm = load_llm(\"llm.json\")\n```\n\nFor a YAML-formatted LLM configuration (llm.yaml):\n\n```yaml\n_type: openai\nbest_of: 1\nfrequency_penalty: 0.0\nmax_tokens: 256\nmodel_name: text-davinci-003\nn: 1\npresence_penalty: 0.0\nrequest_timeout: null\ntemperature: 0.7\ntop_p: 1.0\n```\n\nLoad the configuration like this:\n\n```python\nfrom langchain.llms.loading import load_llm\n\nllm = load_llm(\"llm.yaml\")\n```\n\nTo save an LLM configuration from memory to a serialized version, you can use the `.save` method. This method supports both JSON and YAML formats:\n\n```python\nllm.save(\"llm.json\")\nllm.save(\"llm.yaml\")\n```\n\nThis way, you can easily save and load LLM configurations to and from disk."
+    },
+    "metadata": null,
+    "id": "45948e5b-b750-4931-b6fd-6a5891f1489f",
+    "created_at": "2023-11-07T20:20:24.111210+00:00",
+    "modified_at": "2023-11-07T20:20:24.111210+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "Show me an example using Weaviate, but customizing the VectorStoreRetriever to return the top 10 k nearest neighbors. "
+    },
+    "outputs": {
+      "answer": "To customize the Weaviate client and return the top 10 k nearest neighbors, you can utilize the `as_retriever` method with the appropriate parameters. Here's how you can achieve this:\n\n```python\n# Assuming you have imported the necessary modules and classes\n\n# Create the Weaviate client\nclient = weaviate.Client(url=os.environ[\"WEAVIATE_URL\"], ...)\n\n# Initialize the Weaviate wrapper\nweaviate = Weaviate(client, index_name, text_key)\n\n# Customize the client to return top 10 k nearest neighbors using as_retriever\ncustom_retriever = weaviate.as_retriever(\n    search_type=\"similarity\",\n    search_kwargs={\n        'k': 10  # Customize the value of k as needed\n    }\n)\n\n# Now you can use the custom_retriever to perform searches\nresults = custom_retriever.search(query, ...)\n```"
+    },
+    "metadata": null,
+    "id": "b78b397a-b32c-4946-98d0-7ac05d948727",
+    "created_at": "2023-11-07T20:20:24.076204+00:00",
+    "modified_at": "2023-11-07T20:20:24.076204+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "What is BabyAGI"
+    },
+    "outputs": {
+      "answer": "BabyAGI is an example of an \"autonomous AI agent\" that can generate and simulate the execution of tasks based on a given objective."
+    },
+    "metadata": null,
+    "id": "f29a23a4-468f-4edd-965e-e28a1e04d810",
+    "created_at": "2023-11-07T20:20:24.075317+00:00",
+    "modified_at": "2023-11-07T20:20:24.075317+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "What is the difference between ChatPromptTemplate and PromptTemplate?"
+    },
+    "outputs": {
+      "answer": "ChatPromptTemplate and PromptTemplate are similar in their functions. PromptTemplate takes a prompt as a string that can contain variables. ChatPromptTemplate separates the prompt into structured messages of different kinds. Each chat message is associated with content, and an additional parameter called role. Some example roles include system, human (or user), and AI (or assistant)."
+    },
+    "metadata": null,
+    "id": "365326e9-23d2-40db-8188-b635003bee9f",
+    "created_at": "2023-11-07T20:20:24.073597+00:00",
+    "modified_at": "2023-11-07T20:20:24.073597+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "Show me how to use RecursiveURLLoader"
+    },
+    "outputs": {
+      "answer": "The RecursiveURLLoader comes from the langchain.document_loaders.recursive_url_loader module. Here's an example of how to use it:\n\n```python\nfrom langchain.document_loaders.recursive_url_loader import RecursiveUrlLoader\n\n# Create an instance of RecursiveUrlLoader with the URL you want to load\nloader = RecursiveUrlLoader(url=\"https://example.com\")\n\n# Load all child links from the URL page\ndocuments = loader.load()\n\n# Fetch the documents\nfor doc in documents:\n    print(doc)\n```\n\nMake sure to replace \"https://example.com\" with the actual URL you want to load."
+    },
+    "metadata": null,
+    "id": "b5c4345c-4199-4686-89a7-716b27186fc5",
+    "created_at": "2023-11-07T20:20:23.780074+00:00",
+    "modified_at": "2023-11-07T20:20:23.780074+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "what are the main methods supported by Runnables"
+    },
+    "outputs": {
+      "answer": "The `runnable` interface in LangChain supports several main methods for interacting with components:\n\n1. `stream`: This method streams back response chunks in real-time, useful for processing large computations or text generation as they become available.\n\n2. `invoke`: Calls the runnable chain on a single input, providing a single response output.\n\n3. `batch`: Calls the runnable chain on a list of inputs, returning a list of corresponding responses.\n\n4. `astream`: Asynchronously streams response chunks back, suitable for handling concurrent tasks.\n\n5. `ainvoke`: Asynchronously calls the runnable chain on a single input and returns the response.\n\n6. `abatch`: Asynchronously calls the runnable chain on a list of inputs, returning a list of corresponding responses."
+    },
+    "metadata": null,
+    "id": "00397323-b061-4733-9d2b-9ab3c4fcf0b7",
+    "created_at": "2023-11-07T20:20:23.647448+00:00",
+    "modified_at": "2023-11-07T20:20:23.647448+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "What is html2texttransformer? Does it omit urls?"
+    },
+    "outputs": {
+      "answer": "The `Html2TextTransformer` is a class provided by LangChain's `document_transformers` module. It is used to transform HTML content into clean, easy-to-read plain ASCII text.\n\nThis transformer is designed to convert HTML pages into human-readable text, making it suitable for scenarios where the goal is to extract content without the need to manipulate specific HTML elements.\n\nIf urls are present in the source Document's metadata, then they will be retained. If they are stored in the page_content itself, the class makes no guarantees that they will be retained."
+    },
+    "metadata": null,
+    "id": "97524398-3656-4e2e-ba5c-9aef6eb5fdba",
+    "created_at": "2023-11-07T20:20:23.622036+00:00",
+    "modified_at": "2023-11-07T20:20:23.622036+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "I want to return the source documents of my Weaviate retriever. Show me how"
+    },
+    "outputs": {
+      "answer": "To retrieve the source documents from your Weaviate vectorstore, you need to configure your client to include the 'sources' attribute. Here's an example of how you can achieve this:\n\n```python\nweaviate_client = Weaviate(\n    client=client,\n    index_name='index_name',\n    text_key='text',\n    embedding=OpenAIEmbeddings(),\n    by_text=False,\n    attributes=['source'],\n)\n```\n\nBy including the 'source' attribute in the attributes list, you ensure that the source documents are returned when you interact with the Weaviate client."
+    },
+    "metadata": null,
+    "id": "52f614a6-a2fe-4040-9741-a09afef1d2bd",
+    "created_at": "2023-11-07T20:20:23.578807+00:00",
+    "modified_at": "2023-11-07T20:20:23.578807+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "what is RAG"
+    },
+    "outputs": {
+      "answer": "RAG stands for Retrieval Augmented Generation, which refers to the application design of using an LLM to generate responses to user inputs grounded on retrieved information. The retrieved information can come from anywhere, though it typically is fetched from 1 or more databases, search engines, knowledge graphs, or other sources."
+    },
+    "metadata": null,
+    "id": "461fd0da-6604-4675-9086-a7dedc521203",
+    "created_at": "2023-11-07T20:20:23.415187+00:00",
+    "modified_at": "2023-11-07T20:20:23.415187+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "whats the code to load text file into a vector store"
+    },
+    "outputs": {
+      "answer": "To load a text file into a vector store using LangChain's document loaders, you can use the following code snippet:\n\n```python\nfrom langchain.document_loaders import TextLoader\n\nloader = TextLoader(\"./index.txt\")\ndocs = loader.load()\nprint(docs)\n```\n\nThis code imports the `TextLoader` class from the document_loaders module, creates an instance of the loader with the path to the text file as an argument, and then uses the `load()` method to read the file's content and create a Document. The resulting Document will contain the text content of the file."
+    },
+    "metadata": null,
+    "id": "2b0e28a8-b437-4b93-99f3-7daf9960a4a8",
+    "created_at": "2023-11-07T20:20:23.364230+00:00",
+    "modified_at": "2023-11-07T20:20:23.364230+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "Help me debug: TypeError: Pinecone.similarity_search_with_score() got an unexpected keyword argument 'min_score'"
+    },
+    "outputs": {
+      "answer": "Your error is likely due to an incorrect parameter being passed to the 'similarity_search_with_score' function in the Pinecone vector store. The correct function signature does not include a 'min_score' argument. This function retrieves documents most similar to a given query text while providing both the documents and their corresponding similarity scores. To use 'similarity_search_with_score', ensure you provide the right arguments: 'query' for the text you want to find similar documents for, 'k' for the number of documents to retrieve (default: 4), 'filter' as an optional metadata-based filtering dictionary, and 'namespace' to specify the search namespace (default is the empty namespace ''). The function returns a list of tuples, each containing a Document and a similarity score (float). To resolve the 'TypeError' issue, ensure proper argument usage as per the documentation.  "
+    },
+    "metadata": null,
+    "id": "46b3b37e-5c30-4ffd-ad37-1265a4e86141",
+    "created_at": "2023-11-07T20:20:23.326193+00:00",
+    "modified_at": "2023-11-07T20:20:23.326193+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "How can I create a simple chat model using my locally saved huggingface model"
+    },
+    "outputs": {
+      "answer": "Certainly! To create a simple chat model using your locally saved Hugging Face model, follow these steps:\n\n1. Install the necessary Python libraries:\n\n- Install 'transformers' library for working with models and tokenizers using 'pip install transformers'.\n\n2. Import the `HuggingFacePipeline` class to work with your local pipeline\n\n```\nfrom langchain.llms import HuggingFacePipeline\n\n# Create an instance of the wrapper\nllm = HuggingFacePipeline.from_model_id(\"path/to/model_directory\", task=\"text-generation\")\n```\nAlternatively, load your pipeline directly:\n```\nfrom langchain.llms.huggingface_pipeline import HuggingFacePipeline\nfrom transformers import AutoModelForCausalLM, AutoTokenizer, pipeline\n\nmodel_path = \"path/to/model_dir\"\ntokenizer = AutoTokenizer.from_pretrained(model_path)\nmodel = AutoModelForCausalLM.from_pretrained(model_path)\npipe = pipeline(\n    \"text-generation\", model=model, tokenizer=tokenizer, max_new_tokens=10\n)\nllm = HuggingFacePipeline(pipeline=pipe)\n```\n\n Finally, interact with the chat model\n```\nresponse = llm.invoke('User: Hello, how can I help?')\n```"
+    },
+    "metadata": null,
+    "id": "624a13d1-3bd8-40fe-be77-872062b04512",
+    "created_at": "2023-11-07T20:20:23.231713+00:00",
+    "modified_at": "2023-11-07T20:20:23.231713+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "How do I use a React Agent with an Anthropic model?"
+    },
+    "outputs": {
+      "answer": "In order to use a ReAct Agent with an Anthropic model, you should first install the reuqired packages:\n\npip install anthropic\n\nNext, import the necessary classes and functions:\n\n    from langchain.agents import load_tools\n    from langchain.agents import initialize_agent\n    from langchain.agents import AgentType\n    from langchain.chat_models import ChatAnthropic\n\nNext, create an instance of ChatAnthropic. Make sure you have set your API key in an environment variable called ANTHROPIC_API_KEY or pass anthropic_api_key as a parameter.\n\n    chat = ChatAnthropic()\n\nNext, load some tools for your agent to use:\n\n    # Specify tools (these can be any custom tool, the following are examples)\ntools = load_tools([\"serpapi\", \"llm-math\"], llm=chat)\n\nFinally, let's initialize an agent with the tools, the language model, and the type of agent we want to use.\n\n    agent = initialize_agent(tools, chat, agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose=True)\n\nNow, enter a prompt to test it out:\n\n    agent.invoke(\"Who is Leo DiCaprio's girlfriend? What is her current age raised to the 0.43 power?\")"
+    },
+    "metadata": null,
+    "id": "5082ac41-2241-4dbd-8abd-672ee373ef10",
+    "created_at": "2023-11-07T20:20:23.231241+00:00",
+    "modified_at": "2023-11-07T20:20:23.231241+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "How do I use Qdrant as a vector store in the conversational retrieval chain?"
+    },
+    "outputs": {
+      "answer": "In order to use Qdrant as a vector store in the conversational retrieval chain, you should start by installing Qdrant:\n\n    pip install qdrant-client\n\nNext, import the necessary classes and functions:\n\n    from langchain.vectorstores import Qdrant\n    from langchain.embeddings.openai import OpenAIEmbeddings\n    from langchain.text_splitter import CharacterTextSplitter\n    from langchain.llms import OpenAI\n    from langchain.chains import ConversationalRetrievalChain\n    from langchain.document_loaders import TextLoader\n    from langchain.memory import ConversationBufferMemory\n\nLoad, split, and embed your documents:\n\n    loader = TextLoader(\"state_of_the_union.txt\")\n    documents = loader.load()\n\n    text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0, separator=\"\n\")\n    documents = text_splitter.split_documents(documents)\n    embeddings = OpenAIEmbeddings()\n\nNext, connect to Qdrant. This is for storing locally on-disk, but you can also use an on-premise server deployment or store on the Qdrant cloud:\n\n    qdrant = Qdrant.from_documents(\n        documents,\n        embeddings,\n        path=\"/tmp/local_qdrant\",\n        collection_name=\"my_documents\",\n    )\n\nNext, create a memory object, which is necessary to track the inputs/outputs and hold a conversation:\n\n    memory = ConversationBufferMemory(memory_key=\"chat_history\", return_messages=True)\n\nNow initialize the ConversationalRetrievalChain:\n\n    qa = ConversationalRetrievalChain.from_llm(OpenAI(temperature=0), qdrant.as_retriever(), memory=memory)\n\nNow, you can create queries to test it out:\n\n    query = \"What did the president say about Ketanji Brown Jackson\"\n    result = qa({\"question\": query})\n\nOutput:\n\n    The president said that he had nominated Ketanji Brown Jackson to serve on the United States Supreme Court four days ago.\n\n    query = \"Who are they succeeding?\"\n    result = qa({\"question\": query})\n\nOutput:\n\n    Justice Breyer."
+    },
+    "metadata": null,
+    "id": "955f3505-3e45-40a8-aa6b-8e6339907185",
+    "created_at": "2023-11-07T20:20:23.230577+00:00",
+    "modified_at": "2023-11-07T20:20:23.230577+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "How do I use Summary Memory in the conversational retrieval chain?"
+    },
+    "outputs": {
+      "answer": "In order to use Summary Memory in the conversational retrieval chain, you should first import the necessary classes and functions:\n\n        from langchain.memory import ConversationSummaryMemory\n    from langchain.embeddings.openai import OpenAIEmbeddings\n    from langchain.vectorstores import Chroma # You can choose any LangChain vectorstore\n    from langchain.text_splitter import CharacterTextSplitter\n    from langchain.chat_models import ChatOpenAI # You can choose any LangChain vectorstore\n    from langchain.chains import ConversationalRetrievalChain\n    from langchain.document_loaders import TextLoader\n\nSplit and embed your documents, and add them to your selected vectorstore:\n\n    loader = TextLoader(\"state_of_the_union.txt\")\n    documents = loader.load()\n\n    text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0, separator=\"\n\")\n    documents = text_splitter.split_documents(documents)\n    embeddings = OpenAIEmbeddings()\n    vectorstore = Chroma.from_documents(documents, embeddings)\n\nNext, create a ConversationSummaryMemory object:\n\n    memory = ConversationSummaryMemory(llm=ChatOpenAI(model=\"gpt-3.5-turbo\"), memory_key=\"chat_history\", return_messages=True)\n\nNow initialize the ConversationalRetrievalChain:\n\n    qa = ConversationalRetrievalChain.from_llm(ChatOpenAI(model=\"gpt-3.5-turbo\",temperature=0), vectorstore.as_retriever(), memory=memory)\n\nNow, you can create queries to test it out:\n\n    query = \"What did the president say about Ketanji Brown Jackson\"\n    result = qa({\"question\": query})\n\nOutput:\n\n    The president said that he had nominated Ketanji Brown Jackson to serve on the United States Supreme Court four days ago.\n\n    query = \"Who are they succeeding?\"\n    result = qa.invoke({\"question\": query})\n\nOutput:\n\n    Justice Breyer."
+    },
+    "metadata": null,
+    "id": "9cb411da-7031-4f78-8aaf-99f71c5e22ce",
+    "created_at": "2023-11-07T20:20:23.164886+00:00",
+    "modified_at": "2023-11-07T20:20:23.164886+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "How do I load Youtube transcripts and CSV documents?"
+    },
+    "outputs": {
+      "answer": "To load YouTube transcripts in LangChain, you can use the YoutubeLoader document loader. Here's an example of how to do it:\n\nInstall the required packages:\n```\npip install langchain youtube_transcript_api pytube\n```\n\nImport the necessary classes:\n\n\n    from langchain.document_loaders import YoutubeLoader\n\n\nCreate an instance of the YoutubeLoader class and provide the YouTube video URL:\n\n\n    loader = YoutubeLoader.from_youtube_url(\"https://www.youtube.com/watch?v=QsYGlZkevEg\", add_video_info=True)\n\n\nLoad the transcript using the load method:\n\n    video = loader.load()\n\nTo load CSV documents you can use CSVLoader. Follow the steps below:\n\nImport the necessary classes:\n\n    from langchain.document_loaders import CSVLoader\n\n\nCreate an instance of the CSVLoader class and provide the path to the CSV file:\n\n\n    loader = CSVLoader(file_path=\"./example_data/mlb_teams_2012.csv\")\n\nLoad the CSV document using the load method:\n\n    loader.load()"
+    },
+    "metadata": null,
+    "id": "e7562702-c131-4e4d-9cf8-8cfd10ba2197",
+    "created_at": "2023-11-07T20:20:23.055805+00:00",
+    "modified_at": "2023-11-07T20:20:23.055805+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "my agent keeps getting an OutputParserException is something i can set to make it take care of these?"
+    },
+    "outputs": {
+      "answer": "You can control the agent's behavior for output parsing errors by initializing the agent with `handle_parsing_errors`=True. Then the agent will see 'Handle errors with Invalid or incomplete response'. You can also set a string to provide a custom error message to the agent, or provide a custom error handling function."
+    },
+    "metadata": null,
+    "id": "16caed2f-350c-458a-bb9c-33d9edc484a5",
+    "created_at": "2023-11-07T20:20:22.878117+00:00",
+    "modified_at": "2023-11-07T20:20:22.878117+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "What does ReAct mean?"
+    },
+    "outputs": {
+      "answer": "ReAct in LangChain refers to a type of agent that 'Reasons' and 'Act's in a loop."
+    },
+    "metadata": null,
+    "id": "262e8bbc-3513-44f8-a57c-bcdaabbe0583",
+    "created_at": "2023-11-07T20:20:22.854256+00:00",
+    "modified_at": "2023-11-07T20:20:22.854256+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "What are intermediate steps in langchain?"
+    },
+    "outputs": {
+      "answer": "Intermediate stps represent previous agent actions and corresponding outputs. They are used to help the agent know what work has already been done in pursuit of a goal."
+    },
+    "metadata": null,
+    "id": "95c73528-7ef2-435b-8b44-02f51b0311e3",
+    "created_at": "2023-11-07T20:20:22.850832+00:00",
+    "modified_at": "2023-11-07T20:20:22.850832+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "im getting a rate limit error for my llm - how do I have it automatically go to a different model?"
+    },
+    "outputs": {
+      "answer": "To switch to a different model when an LLM is gettin rate limited, you can use 'fallbacks'. For instance, if you have too llms: openai_llm and anthropic_llm, you can have the program fall back to the anthropic llm by calling `llm = openai_llm.with_fallbacks([anthropic_llm])`"
+    },
+    "metadata": null,
+    "id": "c095bdf0-3284-49d2-8cbc-617fbc2d237f",
+    "created_at": "2023-11-07T20:20:22.830759+00:00",
+    "modified_at": "2023-11-07T20:20:22.830759+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "What's function calling"
+    },
+    "outputs": {
+      "answer": "Function calling refers to the ability to define functions for LLMs to let them choose to call with structured arguments."
+    },
+    "metadata": null,
+    "id": "5b597298-5933-41b5-8630-dc63c5c3dd2a",
+    "created_at": "2023-11-07T20:20:22.830475+00:00",
+    "modified_at": "2023-11-07T20:20:22.830475+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "what is the langserve"
+    },
+    "outputs": {
+      "answer": "LangServe is an easy way to deploy any LangChain runnable, chain, or agent. It uses FastAPI and pydantic to automatically create an API server from any compatible LangChain component."
+    },
+    "metadata": null,
+    "id": "b240d121-6d1d-4139-8dd5-1d788315f398",
+    "created_at": "2023-11-07T20:20:22.830033+00:00",
+    "modified_at": "2023-11-07T20:20:22.830033+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "What's a string evaluator"
+    },
+    "outputs": {
+      "answer": "A string evaluator in LangChain is an object that assesses the performance of a language model's predicted response by comparing it to an input string and/or reference string."
+    },
+    "metadata": null,
+    "id": "ff59fca2-8ec2-4dab-8b6a-30520745a707",
+    "created_at": "2023-11-07T20:20:22.759096+00:00",
+    "modified_at": "2023-11-07T20:20:22.759096+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "whats a toolkit"
+    },
+    "outputs": {
+      "answer": "Toolkits are collections of tools that are designed to be used together for specific tasks and have convenience loading methods."
+    },
+    "metadata": null,
+    "id": "35b89e4a-dd24-485b-b7cc-8ebd5964cfc7",
+    "created_at": "2023-11-07T20:20:22.619190+00:00",
+    "modified_at": "2023-11-07T20:20:22.619190+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "is langchain compatible with pydantic v2?"
+    },
+    "outputs": {
+      "answer": "As of langchain>=0.0.267, LangChain will allow users to install either Pydantic V1 or V2, though it internally will use pydantic V1."
+    },
+    "metadata": null,
+    "id": "41482eff-8de0-4e50-8276-7298726d3f05",
+    "created_at": "2023-11-07T20:20:22.543701+00:00",
+    "modified_at": "2023-11-07T20:20:22.543701+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "how many llm api calls are made in OpenAIFunctionsAgent"
+    },
+    "outputs": {
+      "answer": "The OpenAIFunctionsAgent is an agent driven by OpenAI's function-powered API. It uses the function_call parameter from OpenAI to determine which tools to use for each API call. In general, the number of API calls made by the OpenAIFunctionsAgent depends on the question and the number of tools used in the agent's pipeline. At minimum, one call will be made to the LLM to (optionally) select a tool or directly respond. For more complex questions or intents, the agent may make many calls."
+    },
+    "metadata": null,
+    "id": "c7f2bc9f-489c-4024-9b46-f81f943ba926",
+    "created_at": "2023-11-07T20:20:22.353453+00:00",
+    "modified_at": "2023-11-07T20:20:22.353453+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "What are some ways of doing retrieval augmented generation?"
+    },
+    "outputs": {
+      "answer": "Retrieval Augmented Generation (RAG) is a process that involves retrieving external data and using it in the generation step of language models. LangChain provides various building blocks for RAG applications. Here are some ways of doing retrieval augmented generation:\n\n- Document loaders: LangChain offers over 100 document loaders to load documents from different sources, including private S3 buckets and public websites.\n- Document transformers: These help in fetching relevant parts of documents by splitting or chunking large documents into smaller chunks.\n- Text embedding models: LangChain integrates with over 25 different embedding providers and methods to create embeddings for documents, allowing efficient similarity-based retrieval.\n- Vector stores: With the rise of embeddings, LangChain supports over 50 vector stores for efficient storage and searching of embeddings.\n- Retrievers: LangChain supports various retrieval algorithms, including semantic search, parent document retriever, self-query retriever, ensemble retriever, and more, to retrieve the data from the database.\n\nThese components work together to enable retrieval augmented generation in LangChain. [0] [1]"
+    },
+    "metadata": null,
+    "id": "1bce0b65-1a53-4d66-bbcc-8dd81f86b891",
+    "created_at": "2023-11-07T20:20:22.343370+00:00",
+    "modified_at": "2023-11-07T20:20:22.343370+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "whats the difference between a handler and an inheritable_handler?"
+    },
+    "outputs": {
+      "answer": "In Langchain, both `handler` and `inheritable_handler` are types of callback handlers. Handlers can refer to inheritable handlers or local handlers. Inheritable handlers are propagated to other objects that are called within a Runnable, chain, tool, or other object. Local handlers are only called by the object they are assigned to and not called by any other objects."
+    },
+    "metadata": null,
+    "id": "4fe8697b-0c12-4727-9efb-5cdaf8030cb2",
+    "created_at": "2023-11-07T20:20:22.341114+00:00",
+    "modified_at": "2023-11-07T20:20:22.341114+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "What is a chain?"
+    },
+    "outputs": {
+      "answer": "A 'Chain' is a class in LangChain that composes a number of components together into a single object. An example would be the LLMChain, which formats an input as a prompt, calls an LLM, and then parses the output. \"chaining\" also can generically refer to composing llms, functions, and other operations together into a larger program."
+    },
+    "metadata": null,
+    "id": "70add79f-a8da-407e-a940-24ea15cf350f",
+    "created_at": "2023-11-07T20:20:22.220140+00:00",
+    "modified_at": "2023-11-07T20:20:22.220140+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "What is LangChain Expression Language?"
+    },
+    "outputs": {
+      "answer": "LangChain Expression Language (LCEL) is a declarative way to easily compose chains together. It provides several benefits for building applications:\n\n- Async, Batch, and Streaming Support: LCEL chains have full sync, async, batch, and streaming support, making it easy to prototype in a Jupyter notebook and then expose it as an async streaming interface.\n- Fallbacks: LCEL allows you to easily attach fallbacks to any chain, handling errors gracefully.\n- Parallelism: LCEL syntax automatically runs components that can be run in parallel.\n- Seamless LangSmith Tracing Integration: LCEL logs all steps to LangSmith for observability and debuggability. [0]\n\nLCEL provides an intuitive and readable syntax for composition and supports streaming, async calls, batching, parallelization, retries, and more. It allows you to combine different components, such as prompts, models, and output parsers, to build powerful applications. LCEL chains can be called synchronously or asynchronously, and they support intermediate result access, input/output schemas, and tracing with LangSmith. [3]"
+    },
+    "metadata": null,
+    "id": "7cc0b357-b9dc-4813-85cd-0f9dc811ed26",
+    "created_at": "2023-11-07T20:20:22.219440+00:00",
+    "modified_at": "2023-11-07T20:20:22.219440+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "which document laaoder should i use for a loading a single web apage?"
+    },
+    "outputs": {
+      "answer": "For a single web page, the WebBaseLoader or AsyncHtmlLoader should suffice. If you want to load multiple pages by traversing a whole website, you can use the SitemapLoader or RecursiveUrlLoader."
+    },
+    "metadata": null,
+    "id": "a3dbb2c9-8425-4a58-9ec0-d64c9e0fb063",
+    "created_at": "2023-11-07T20:20:22.122787+00:00",
+    "modified_at": "2023-11-07T20:20:22.122787+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "whats the difference between run_id and example_id"
+    },
+    "outputs": {
+      "answer": "The `run_id` and `example_id` are both identifiers used in LangChain and LangSmith, but they serve different purposes. The `run_id` is a unique ID assigned to each individual \"run\" in a trace, which represents a unit of work whenever a runnable object such as an LLM or chain is called. An `example_id` is a unique ID assigned to each row (or \"example\") in a LangSmith dataset."
+    },
+    "metadata": null,
+    "id": "96d16dfb-3d82-41c8-9663-0942166ce332",
+    "created_at": "2023-11-07T20:20:22.007297+00:00",
+    "modified_at": "2023-11-07T20:20:22.007297+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "What is an agent"
+    },
+    "outputs": {
+      "answer": "An agent is a component in the Langchain framework that uses a language model (LLM) to determine which actions to take and in what order. It is responsible for making decisions and interacting with tools to accomplish specific objectives."
+    },
+    "metadata": null,
+    "id": "545df7fd-a456-421c-ad3b-02a2373c4e87",
+    "created_at": "2023-11-07T20:20:21.990588+00:00",
+    "modified_at": "2023-11-07T20:20:21.990588+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "how do I search and filter metadata in redis vectorstore?"
+    },
+    "outputs": {
+      "answer": "To perform a similarity search with metadata filtering in LangChain using the Redis vectorstore, you can use Redis filter expressions. The following filter operations are available: RedisText, RedisNum, and RedisTag. Use these when calling `similarity_search()`."
+    },
+    "metadata": null,
+    "id": "fa9f8beb-0cb3-4d67-8ed7-cab5dae0d615",
+    "created_at": "2023-11-07T20:20:21.977588+00:00",
+    "modified_at": "2023-11-07T20:20:21.977588+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "how do I control the maximum number requests that can be made at the same time when making batch calls?"
+    },
+    "outputs": {
+      "answer": "To limit the maximum number of concurrent requests for batch calls in LangChain, you can call the `.batch()` method and configure the 'max_concurrency' paramater within the runnable config.  For example, the following code calls the chain with a maximum of 2 concurrent calls:\n```python\nchain.batch([{'topic': 'bears'}, {'topic': 'cats'}, {'topic': 'dogs'}], config={'max_concurrency': 2})\n```"
+    },
+    "metadata": null,
+    "id": "6b63bf67-259d-46b1-bf84-6878973b4cbb",
+    "created_at": "2023-11-07T20:20:21.977281+00:00",
+    "modified_at": "2023-11-07T20:20:21.977281+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "can i cache LLM calls in sqlite?"
+    },
+    "outputs": {
+      "answer": "To add LLM caching in sqlite, you can use the SQLiteCache class. For example:\n```python\nfrom langchain.globals import set_llm_cache\nfrom langchain.cache import SQLiteCache\nfrom langchain.chat_models import ChatOpenAI\n\nllm = ChatOpenAI()\n\nset_llm_cache(SQLiteCache(database_path=\".langchain.db\"))\nllm.invoke(\"Tell me a joke\")\n```"
+    },
+    "metadata": null,
+    "id": "e3b5e670-18c1-4139-bdba-77c5bcca86dd",
+    "created_at": "2023-11-07T20:20:21.976698+00:00",
+    "modified_at": "2023-11-07T20:20:21.976698+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "how can I create a vectorstore from the texts in the list"
+    },
+    "outputs": {
+      "answer": "Each LangChain vectorstore class implements a \"from_texts\" class method that accepts a list of string texts, an instance of an `Embeddings` object to embed those texts, and an optional list of metadata dictionaries to add to the resulting documents."
+    },
+    "metadata": null,
+    "id": "8a984959-2fa7-4b5d-9301-4482bcdae5b4",
+    "created_at": "2023-11-07T20:20:21.842924+00:00",
+    "modified_at": "2023-11-07T20:20:21.842924+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "what does on_tool_start mean?"
+    },
+    "outputs": {
+      "answer": "The on_tool_start method is defined classes that implement LangChain's BaseCallbackHandler interface. When a \"Tool\" object is invoked, and callbacks are provided, the 'on_tool_start' method is called prior to executing the tool itself."
+    },
+    "metadata": null,
+    "id": "1759e9cd-4464-4e8e-9ee0-67dba2a6834d",
+    "created_at": "2023-11-07T20:20:21.842287+00:00",
+    "modified_at": "2023-11-07T20:20:21.842287+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "what does this do? return RunnableBranch(\n        (\n            RunnableLambda(lambda x: bool(x.get(\"chat_history\"))).with_config(\n                run_name=\"HasChatHistoryCheck\"\n            ),\n            conversation_chain.with_config(run_name=\"RetrievalChainWithHistory\"),\n        ),\n        (\n            RunnableLambda(itemgetter(\"question\")).with_config(\n                run_name=\"Itemgetter:question\"\n            )\n            | retriever\n        ).with_config(run_name=\"RetrievalChainWithNoHistory\"),\n    ).with_config(run_name=\"RouteDependingOnChatHistory\")"
+    },
+    "outputs": {
+      "answer": "This code defines a runnable chain with two branches. The first branch checks if the input has a 'chat_history' key and runs the conversation_chain if it does. Otherwise uses python stdlib's \"itemgetter\" to get the \"question\" item from the input dictionary. Each \"with_config\" call assigns a friendly \"run_name\" to that step in the traced DAG."
+    },
+    "metadata": null,
+    "id": "e2735ed9-894c-4e6e-80eb-814544a35725",
+    "created_at": "2023-11-07T20:20:21.671607+00:00",
+    "modified_at": "2023-11-07T20:20:21.671607+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "How can I use OpenAI functions to get structured outputs in a chain?"
+    },
+    "outputs": {
+      "answer": "You can use OpenAI functions to get structured outputs in a chain by using the create_structured_output_runnable function. This function takes the desired structured output either as a Pydantic class or as JsonSchema. If you pass in a model explicitly, make sure it supports the OpenAI function-calling API. You can then invoke the runnable with the input data, and it will return the structured output. You can also use the bind_functions() method on the ChatOpenAI class to do this directly from an instance of ChatOpenAI."
+    },
+    "metadata": null,
+    "id": "da4af5d1-435b-4078-a64a-9b8233c83cab",
+    "created_at": "2023-11-07T20:20:21.658284+00:00",
+    "modified_at": "2023-11-07T20:20:21.658284+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "hw do i create a prompt template for my chat bot"
+    },
+    "outputs": {
+      "answer": "To create a prompt template for a chat bot, you can use the `ChatPromptTemplate` class. You can initialize it with a list of chat messages, where each message has a role and content. The role can be 'system', 'human', or 'ai'. For example:\n\n```python\nfrom langchain.prompts import ChatPromptTemplate\n\nchat_template = ChatPromptTemplate.from_messages(\n    [\n        ('system', 'You are a helpful AI bot. Your name is {name}.'),\n        ('human', 'Hello, how are you doing?'),\n        ('ai', 'I'm doing well, thanks!'),\n        ('human', '{user_input}'),\n    ]\n)\n\nmessages = chat_template.format_messages(name='Bob', user_input='What is your name?')\n```\n\nYou can also use different subclasses of the `ChatMessagePromptTemplate` class, such as `SystemMessagePromptTemplate` and `HumanMessagePromptTemplate`, to customize the role or content of specific messages in the template. Finally, you can use the \"MessagesPlaceholder\" class to format chat history as a sequence of messages."
+    },
+    "metadata": null,
+    "id": "d7821af1-e175-4cb3-a28c-bb799e227994",
+    "created_at": "2023-11-07T20:20:21.657065+00:00",
+    "modified_at": "2023-11-07T20:20:21.657065+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "what method should subclasses override if they can start producing output while input is still being generated"
+    },
+    "outputs": {
+      "answer": "Subclasses should override the transform() method if they can start producing output while input is still being generated."
+    },
+    "metadata": null,
+    "id": "8cc63c27-aedf-4263-87f2-1c2b9a89aa9f",
+    "created_at": "2023-11-07T20:20:21.650894+00:00",
+    "modified_at": "2023-11-07T20:20:21.650894+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "what does runnable mean"
+    },
+    "outputs": {
+      "answer": "In the context of LangChain, runnable's are the building blocks of the LangChain Expression Language. They implement the \"Runnable\" base class and represent a unit of work that can be invoked, batched, streamed, transformed and composed."
+    },
+    "metadata": null,
+    "id": "482b41b8-5d5d-4d69-9ad1-9c60ba01f1d8",
+    "created_at": "2023-11-07T20:20:21.635316+00:00",
+    "modified_at": "2023-11-07T20:20:21.635316+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "I am summarizing text contained in the variable chunks with load_summarize_chain.\n\nchain = load_summarize_chain(llm, chain_type=\"map_reduce\")\nchain.run(chunks)\nI would like to add a tag when I run the chain that langsmith will capture. How?"
+    },
+    "outputs": {
+      "answer": "all chains inherit from the runnable interface. So they support an invoke method. The invoke method takes the input and a config.\nFor the config you can pass in { 'tags': [ 'tag1' ] }.\n\nchain.invoke( input, config={ 'tags': ['tags1'] }.\n\nIf you want to just tag that run (and not propagate the tags to child calls), you can pass the tags in as a list of strings to the call to `load_summarize_chain(llm, chain_type=\"map_reduce\", tags=['tag1'])`.\nFor older methods in the LangChain API like run, __call__, etc. you can also add tags directly when calling, such as with `chain.run(\"foo\", tags=['tag1])`."
+    },
+    "metadata": null,
+    "id": "06873ae4-5eb2-4d99-a969-9d937d8316f9",
+    "created_at": "2023-11-07T20:20:21.310681+00:00",
+    "modified_at": "2023-11-07T20:20:21.310681+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "Let's say I have a chain like:\n\nmodel_call_1 = (\n  RunnablePassthrough()\n  | prompt\n  | model_parser\n)\n# ...\nchain = model_call_1 #| { \"attr\": model_call_2 } | model_call_3\nHow can I print out the filled out prompts for each model call?"
+    },
+    "outputs": {
+      "answer": "There are a few options. You can use set_debug(True) to print out each run to the console:\n```\nfrom langchain.globals import set_debug\n\nset_debug(True)\n```\nThis uses the ConsoleCallbackHandler. You can also trace with LangSmith by configuring your environment:\n\n```\nexport LANGCHAIN_API_KEY=\"Your API Key\"\nexport LANGCHAIN_TRACING_V2=true\n```"
+    },
+    "metadata": null,
+    "id": "e855e12f-bb08-47d1-bef0-34a3dac9e482",
+    "created_at": "2023-11-07T20:20:21.308674+00:00",
+    "modified_at": "2023-11-07T20:20:21.308674+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "soooo, is it possible to pass any kwargs for similarity thresholds or K-top documents in the multivectorretriever as we do in normal retrievers?"
+    },
+    "outputs": {
+      "answer": "You can assign search_kwargs (such as k) to the instance of the MultiVectorRetriever"
+    },
+    "metadata": null,
+    "id": "02dcbacf-984c-474e-958c-64edb12b1ca9",
+    "created_at": "2023-11-07T20:20:21.301299+00:00",
+    "modified_at": "2023-11-07T20:20:21.301299+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "whats the stuff documents chain?"
+    },
+    "outputs": {
+      "answer": "The stuff documents chain (\"stuff\" as in \"to stuff\" or \"to fill\") is the most straightforward of the document chains. It takes a list of documents, inserts them all into a prompt and passes that prompt to an LLM.\n\nThis chain is well-suited for applications where documents are small and only a few are passed in for most calls."
+    },
+    "metadata": null,
+    "id": "8a014dc9-9243-426e-9973-898dc02c3b6f",
+    "created_at": "2023-11-07T20:20:21.300363+00:00",
+    "modified_at": "2023-11-07T20:20:21.300363+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "Does AlephAlpha support token-level streaming natively in LangChain?"
+    },
+    "outputs": {
+      "answer": "No, while the stream() method is provided in all langchain runnables, AlephAlpha doesn't natively implement streaming on the token level."
+    },
+    "metadata": null,
+    "id": "38167890-cf65-4a59-bae1-ca043307234e",
+    "created_at": "2023-11-07T20:20:21.257866+00:00",
+    "modified_at": "2023-11-07T20:20:21.257866+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "How to use a prompt template with chat history"
+    },
+    "outputs": {
+      "answer": "To add chat history to a prompt template, you can use the MessagesPlaceholder class.\n\n```\nfrom langchain.prompts import MessagesPlaceholder, ChatPromptTemplate\n\nchat_template = ChatPromptTemplate.from_messages(\n    [\n        (\"system\", \"You are a helpful AI bot.\"),\n        MessagesPlaceholder(variable_name=\"chat_history\")\n        (\"human\", \"{input}\"),\n    ]\n)\n```\n"
+    },
+    "metadata": null,
+    "id": "b47ff7a7-c3b1-4ef3-8799-02e638d57e7e",
+    "created_at": "2023-11-07T20:20:21.175555+00:00",
+    "modified_at": "2023-11-07T20:20:21.175555+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "How do i run llama 2 in langchain"
+    },
+    "outputs": {
+      "answer": "Llama 2 can be run through a number of LangChain llm and chat model integrations. A non-exhaustive list includes LlamaCPP, Ollama, Huggingface, Fireworks, and Replicate, HuggingFace. These imports would be\n```python\nfrom langchain.llms import Fireworks, HuggingFacePipeline, LlamaCpp, Ollama, Replicate, HuggingFaceHub, HuggingFaceTextGenInference, HuggingFaceEndpoint\nfrom langchain.chat_models import ChatFireworks, ChatOllama\n```\n\nInitializing any of these classes with a parameter pointing to the llama2 model should suffice. Noteably, there is no LangChain class called Llama2, Llama, or Huggingface (with no suffixes). The classes listed above are also case-sensitive."
+    },
+    "metadata": null,
+    "id": "db46ede3-6571-4770-9451-25b8884869ff",
+    "created_at": "2023-11-07T20:20:21.174424+00:00",
+    "modified_at": "2023-11-07T20:20:21.174424+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "What's the difference between the OpenAI and ChatOpenAI classes?"
+    },
+    "outputs": {
+      "answer": "OpenAI wraps OpenAI's completions endpoint, whereas the ChatOpenAI class wraps the chat endpoint. Both interfadce with LLM's, but the interface chat models is structured as chat messages, which contain information about the role of speaker. Examples of roles include system, human/user, and AI/assistant."
+    },
+    "metadata": null,
+    "id": "bdca9b06-064b-4202-a1eb-900ac00656c5",
+    "created_at": "2023-11-07T20:20:21.059365+00:00",
+    "modified_at": "2023-11-07T20:20:21.059365+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "how do i run llama on vllm"
+    },
+    "outputs": {
+      "answer": "You can run HuggingFace models in vLLM, so you can select the model name of a compatible Llama model then use the VLLM class in LangChain:\n ```python\nfrom langchain.llms import VLLM\n\nllm = VLLM(\n    model=\"name-of-llama-model\",\n    trust_remote_code=True,  # mandatory for hf models\n)\n\nprint(llm(\"What is the capital of France ?\"))\n```"
+    },
+    "metadata": null,
+    "id": "80bc032e-899b-450f-8e11-5ae089ee4af8",
+    "created_at": "2023-11-07T20:20:21.057960+00:00",
+    "modified_at": "2023-11-07T20:20:21.057960+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "What class type is returned by initialize_agent"
+    },
+    "outputs": {
+      "answer": "AgentExecutor"
+    },
+    "metadata": null,
+    "id": "f5ba1892-2384-4ea8-a4ae-074aada41c43",
+    "created_at": "2023-11-07T20:20:21.056527+00:00",
+    "modified_at": "2023-11-07T20:20:21.056527+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "what does runnable.predict() mean?"
+    },
+    "outputs": {
+      "answer": "The runnable base class does not have a predict() method, but the LLM classes (which inherit from Runnable) do. For those classes, predict() formats a prompt with keyword args and passes it to the LLM."
+    },
+    "metadata": null,
+    "id": "caf14ea1-e2fc-48e0-b08a-0754d03efc4a",
+    "created_at": "2023-11-07T20:20:21.020940+00:00",
+    "modified_at": "2023-11-07T20:20:21.020940+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "how to run a runnable"
+    },
+    "outputs": {
+      "answer": "Use invoke(), stream(), batch(), or their async equivalents (ainvoke, astream, and abatch)"
+    },
+    "metadata": null,
+    "id": "b2f04498-f831-4f3c-9e30-25ffca96f8f2",
+    "created_at": "2023-11-07T20:20:21.020294+00:00",
+    "modified_at": "2023-11-07T20:20:21.020294+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "how do I run gpt-4 on anthropic?"
+    },
+    "outputs": {
+      "answer": "GPT-4 is a model trained by OpenAI and not provided by Anthropic."
+    },
+    "metadata": null,
+    "id": "f22b91b6-30eb-49d9-b511-2a4971da5750",
+    "created_at": "2023-11-07T20:20:21.019376+00:00",
+    "modified_at": "2023-11-07T20:20:21.019376+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "who to email for filing cves"
+    },
+    "outputs": {
+      "answer": "security@langchain.dev"
+    },
+    "metadata": null,
+    "id": "75388ec1-4eff-40ee-b0a7-a4b0ad31db7f",
+    "created_at": "2023-11-07T20:20:20.504652+00:00",
+    "modified_at": "2023-11-07T20:20:20.504652+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "What class is made when using | in langchain?"
+    },
+    "outputs": {
+      "answer": "The | pipe operator combines (or coerces) two runnables ( or a runnable and a function or dict or other compatible primitive) into a new runnable, namely a \"RunnableSequence.\""
+    },
+    "metadata": null,
+    "id": "b0a2c46d-dcf9-419f-a3ec-5265fb604ba5",
+    "created_at": "2023-11-07T20:20:20.478514+00:00",
+    "modified_at": "2023-11-07T20:20:20.478514+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "How do i run gpt-4 locally?"
+    },
+    "outputs": {
+      "answer": "GPT-4 is a closed-source model provided through an API by OpenAI. While you can connect to GPT-4 via the API, you cannot run the model locally."
+    },
+    "metadata": null,
+    "id": "aa7ba3c4-4d0f-4dee-9ce6-5572ee6ea72e",
+    "created_at": "2023-11-07T20:20:20.261322+00:00",
+    "modified_at": "2023-11-07T20:20:20.261322+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "How do i run lcel in java"
+    },
+    "outputs": {
+      "answer": "LangChain, along with LCEL, or LangChain Expression Language, is not natively offered in java. LangChain is available in both python and javascript/typescript."
+    },
+    "metadata": null,
+    "id": "16959bc7-b01c-4efa-9fab-d7e5117d9b18",
+    "created_at": "2023-11-07T20:20:20.259657+00:00",
+    "modified_at": "2023-11-07T20:20:20.259657+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "What's the difference between a document loader and a chat loader?"
+    },
+    "outputs": {
+      "answer": "A document loader is used to load data as Document objects, which are pieces of text with associated metadata. A chat loader is specifically designed to load chat messages from different platforms, such as Discord, Facebook Messenger, Slack, and Telegram. Chat loaders load these conversations as ChatSessions, which contain a list of BaseMessage's"
+    },
+    "metadata": null,
+    "id": "9217309f-5113-4d09-ad54-eb71a8f8f96a",
+    "created_at": "2023-11-07T20:20:19.852866+00:00",
+    "modified_at": "2023-11-07T20:20:19.852866+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "whats the diff between a docstore and a vector store in langchain?"
+    },
+    "outputs": {
+      "answer": "Vector stores implement the VectorStore interface, which exposes a way to search using similarity search (based on embedding or vector similarity). Doc stores implement the DocStore interface, which allows a search() method to return documents, but this needn't use vector similarity."
+    },
+    "metadata": null,
+    "id": "348f9ff3-22f3-4f2b-a00e-2449011c7c1a",
+    "created_at": "2023-11-07T20:20:19.851785+00:00",
+    "modified_at": "2023-11-07T20:20:19.851785+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "Will this work?\n\n```\nfrom langchain.chat_models import ChatOpenAI\n\nllm = ChatOpenAI(model=\"claude-2\")\nllm.predict(\"Hi\")\n```"
+    },
+    "outputs": {
+      "answer": "No. Claude-2 is a closed-source model developed by Anthropic. The ChatOpenAI class interfaces with OpenAI's chat models."
+    },
+    "metadata": null,
+    "id": "8720a3e9-d293-439f-b946-431140ed348c",
+    "created_at": "2023-11-07T20:20:19.850295+00:00",
+    "modified_at": "2023-11-07T20:20:19.850295+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "what's the strict argument in the json output function parser mean?"
+    },
+    "outputs": {
+      "answer": "The strict argument in the JSON output function parser determines whether non-JSON-compliant strings are allowed during parsing."
+    },
+    "metadata": null,
+    "id": "429e58f2-6e9d-4aa6-a8b1-b67b7531bea5",
+    "created_at": "2023-11-07T20:20:19.848587+00:00",
+    "modified_at": "2023-11-07T20:20:19.848587+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "what's stuff mean in chain_type=stuff"
+    },
+    "outputs": {
+      "answer": "\"stuff\" refers to the StuffDocumentsCHain. In this case \"stuff\" means \"to stuff\" or \"to fill\"). It takes a list of documents, inserts them all into a prompt and passes that prompt to an LLM."
+    },
+    "metadata": null,
+    "id": "d611955e-867a-474a-943e-339d19a03cf9",
+    "created_at": "2023-11-07T20:20:19.846441+00:00",
+    "modified_at": "2023-11-07T20:20:19.846441+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "Is stream natively supported by the vertex ai llm?"
+    },
+    "outputs": {
+      "answer": "yes"
+    },
+    "metadata": null,
+    "id": "f46de2a5-8a7e-4f05-b9d7-a41bf35d2c84",
+    "created_at": "2023-11-07T20:20:19.845198+00:00",
+    "modified_at": "2023-11-07T20:20:19.845198+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "Is stream natively supported by Petals llm"
+    },
+    "outputs": {
+      "answer": "no"
+    },
+    "metadata": null,
+    "id": "2db8593c-81e4-4df0-8f89-725aa5763a0c",
+    "created_at": "2023-11-07T20:20:19.843763+00:00",
+    "modified_at": "2023-11-07T20:20:19.843763+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "whats the difference between run house and click house"
+    },
+    "outputs": {
+      "answer": "ClickHouse is an open source database for real-time apps and analytics. Runhouse allows remote compute and data across environments and users. "
+    },
+    "metadata": null,
+    "id": "71dc8d15-e947-4037-8e70-c949eeef35e9",
+    "created_at": "2023-11-07T20:20:19.842219+00:00",
+    "modified_at": "2023-11-07T20:20:19.842219+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "is gpt-3.5-turbo an lstm?"
+    },
+    "outputs": {
+      "answer": "no"
+    },
+    "metadata": null,
+    "id": "a3c1cbd0-9086-42ea-9e50-06c68fd11434",
+    "created_at": "2023-11-07T20:20:19.829107+00:00",
+    "modified_at": "2023-11-07T20:20:19.829107+00:00",
+    "runs": [],
+    "source_run_id": null
+  },
+  {
+    "dataset_id": "3f29798f-5939-4643-bd99-008ca66b72ed",
+    "inputs": {
+      "question": "how do i initialize OpenAIAnthropicVectorStore?"
+    },
+    "outputs": {
+      "answer": "I'm not sure what OpenAIAnthropicVectorStore is, though there is a similar-sounding class OpenSearchVectorSearch."
+    },
+    "metadata": null,
+    "id": "2ef1245a-334c-4c4c-8105-258d853f20d6",
+    "created_at": "2023-11-07T20:20:19.827287+00:00",
+    "modified_at": "2023-11-07T20:20:19.827287+00:00",
+    "runs": [],
+    "source_run_id": null
+  }
+]
